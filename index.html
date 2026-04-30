@@ -2296,6 +2296,61 @@
                             </div>
                         </div>
                     </div>
+                    <!-- ── COMMISSIONS CARD (for Level 1 resellers only) ── -->
+                    <div class="section-card" id="commissions-card" style="display: none;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                            <div>
+                                <div class="section-title">💰 Team Commissions (5%)</div>
+                                <div class="section-sub">Earn 5% from every sale your sub-resellers make</div>
+                            </div>
+                            <div
+                                style="background: rgba(124, 58, 237, 0.15); padding: 8px 16px; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 10px; color: var(--text-muted);">Total Earned</div>
+                                <div style="font-size: 22px; font-weight: 700; color: var(--purple-light);"
+                                    id="total-commission-amount">GHS 0.00</div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 14px; margin: 12px 0;">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <span style="font-size: 24px;">🎯</span>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 12px; font-weight: 500; color: var(--success);">Start Earning
+                                        More!</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">Register Level 2 resellers
+                                        using your link and earn 5% on all their sales</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--surface); border-radius: 10px; padding: 12px; margin-top: 8px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                <div style="flex: 1;">
+                                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Your
+                                        Referral Link</div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="text" id="commission-ref-link" readonly
+                                            style="flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11px; color: var(--text); font-family: monospace;">
+                                        <button onclick="copyCommissionLink()"
+                                            style="background: var(--purple); border: none; border-radius: 8px; padding: 8px 15px; color: white; cursor: pointer; font-size: 11px;">Copy</button>
+                                    </div>
+                                </div>
+                                <button class="link-btn whatsapp" onclick="shareCommissionLink()"
+                                    style="padding: 8px 16px;">📱 Share on WhatsApp</button>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
+                            <div
+                                style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+                                <span>💰 Commission Rate: <strong style="color: var(--success);">5%</strong></span>
+                                <span>👥 Team Members: <strong id="commission-team-count">0</strong></span>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- ── ORDERS TAB ── -->
                     <div class="tab-content" id="tab-orders">
@@ -2317,33 +2372,38 @@
                     </div>
 
                     <!-- ── PRICES TAB ── -->
-<div class="tab-content" id="tab-prices">
-    <div class="section-card">
-        <div class="section-title">Set Your Prices</div>
-        <div class="section-sub">Admin sets the base price. You add your profit on top.</div>
-        <div class="info-note">💡 Your selling price = Base price + Your profit. Customers pay your selling price.</div>
-        
-        <div class="price-net-tabs">
-            <button class="price-net-tab active" onclick="showPriceNet('mtn',this)">MTN</button>
-            <button class="price-net-tab" onclick="showPriceNet('telecel',this)">Telecel</button>
-            <button class="price-net-tab" onclick="showPriceNet('AT_PREMIUM',this)">AT iShare</button>
-            <button class="price-net-tab" onclick="showPriceNet('AT_BIGTIME',this)">AT BigTime</button>
-        </div>
-        
-        <div id="price-grid">
-            <div class="empty-state">
-                <div class="empty-icon">⏳</div>
-                <div class="empty-title">Loading prices...</div>
-                <div class="empty-sub">Please wait</div>
-            </div>
-        </div>
-        
-        <div style="display: flex; gap: 8px; margin-top: 8px;">
-            <button class="save-price-btn" onclick="savePrices()" style="flex: 1;">[S] Save My Prices</button>
-            <button class="save-price-btn" onclick="syncFromServer()" style="flex: 1; background: rgba(124,58,237,0.5);">↻ Sync from Server</button>
-        </div>
-    </div>
-</div>
+                    <div class="tab-content" id="tab-prices">
+                        <div class="section-card">
+                            <div class="section-title">Set Your Prices</div>
+                            <div class="section-sub">Admin sets the base price. You add your profit on top.</div>
+                            <div class="info-note">💡 Your selling price = Base price + Your profit. Customers pay your
+                                selling price.</div>
+
+                            <div class="price-net-tabs">
+                                <button class="price-net-tab active" onclick="showPriceNet('mtn',this)">MTN</button>
+                                <button class="price-net-tab" onclick="showPriceNet('telecel',this)">Telecel</button>
+                                <button class="price-net-tab" onclick="showPriceNet('AT_PREMIUM',this)">AT
+                                    iShare</button>
+                                <button class="price-net-tab" onclick="showPriceNet('AT_BIGTIME',this)">AT
+                                    BigTime</button>
+                            </div>
+
+                            <div id="price-grid">
+                                <div class="empty-state">
+                                    <div class="empty-icon">⏳</div>
+                                    <div class="empty-title">Loading prices...</div>
+                                    <div class="empty-sub">Please wait</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                <button class="save-price-btn" onclick="savePrices()" style="flex: 1;">[S] Save My
+                                    Prices</button>
+                                <button class="save-price-btn" onclick="syncFromServer()"
+                                    style="flex: 1; background: rgba(124,58,237,0.5);">↻ Sync from Server</button>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- ── WITHDRAW TAB ── -->
                     <div class="tab-content" id="tab-wallet">
@@ -2956,6 +3016,65 @@
                 btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
             }
         }
+        // ============================================
+        // COMMISSIONS CARD FUNCTIONS
+        // ============================================
+
+        async function updateCommissionsCard() {
+            // Only show for Level 1 resellers
+            if (!reseller || reseller.level !== 1 || !reseller.can_recruit) {
+                const card = document.getElementById('commissions-card');
+                if (card) card.style.display = 'none';
+                return;
+            }
+
+            try {
+                const res = await fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    const card = document.getElementById('commissions-card');
+                    if (card) card.style.display = 'block';
+
+                    // Get total commission from the response
+                    // If your backend doesn't send total_commission yet, we calculate it
+                    let totalCommission = 0;
+                    if (data.sub_resellers && data.sub_resellers.length > 0) {
+                        data.sub_resellers.forEach(sub => {
+                            totalCommission += (sub.total_profit || 0) * 0.05;
+                        });
+                    }
+
+                    document.getElementById('total-commission-amount').textContent = `GHS ${totalCommission.toFixed(2)}`;
+
+                    const teamCount = data.sub_resellers ? data.sub_resellers.length : 0;
+                    document.getElementById('commission-team-count').textContent = teamCount;
+
+                    // Set the referral link
+                    const refLink = document.getElementById('commission-ref-link');
+                    if (refLink) {
+                        refLink.value = `${PORTAL_URL}/?ref=${reseller.access_code}`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error updating commissions card:', e);
+            }
+        }
+
+        function copyCommissionLink() {
+            const link = document.getElementById('commission-ref-link');
+            if (link) {
+                link.select();
+                document.execCommand('copy');
+                showToast('✅ Referral link copied! Share to recruit Level 2 resellers');
+            }
+        }
+
+        function shareCommissionLink() {
+            const link = `${PORTAL_URL}/?ref=${reseller.access_code}`;
+            const msg = encodeURIComponent(`🚀 Become a Level 2 Reseller with Byvox Data!\n\nJoin using this link: ${link}\n\nEarn 5% commission on all your sales! Start selling data bundles in Ghana today! 🇬🇭`);
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        }
 
         async function doRegister() {
             const btn = document.querySelector('#register-form .btn-primary');
@@ -3030,6 +3149,7 @@
                     renderPriceGrid('mtn');
                 });
             });
+            updateCommissionsCard();
 
             if (reseller.level === 1 && reseller.can_recruit) {
                 setTimeout(() => loadTeamData().catch(e => console.log('Team load skipped:', e)), 500);
@@ -3142,7 +3262,14 @@
                     document.getElementById('wd-history').innerHTML = '';
                 }
 
-            } catch (e) { console.error('Dashboard error:', e); }
+                // ✅ Update commissions card for Level 1 resellers
+                if (reseller && reseller.level === 1 && reseller.can_recruit) {
+                    await updateCommissionsCard();
+                }
+
+            } catch (e) {
+                console.error('Dashboard error:', e);
+            }
         }
 
         function showPriceNet(net, el) {
@@ -3187,115 +3314,115 @@
             const el = document.getElementById(`pf-${net}-${size}`);
             if (el) el.textContent = `GHS ${(base + profit).toFixed(2)}`;
         }
-        
-       async function savePrices() {
-    const list = allBundles[priceNet] || [];
 
-    // Initialize the network object if it doesn't exist
-    if (!myProfit[priceNet]) {
-        myProfit[priceNet] = {};
-    }
+        async function savePrices() {
+            const list = allBundles[priceNet] || [];
 
-    // Loop through each bundle and get the input value
-    list.forEach(b => {
-        const inputId = `pp-${priceNet}-${b.size}`;
-        const input = document.getElementById(inputId);
-
-        if (input) {
-            const val = parseFloat(input.value);
-            if (!isNaN(val) && val >= 0) {
-                myProfit[priceNet][b.size] = val;
+            // Initialize the network object if it doesn't exist
+            if (!myProfit[priceNet]) {
+                myProfit[priceNet] = {};
             }
-        }
-    });
 
-    console.log('💰 Saving profits:', myProfit);
+            // Loop through each bundle and get the input value
+            list.forEach(b => {
+                const inputId = `pp-${priceNet}-${b.size}`;
+                const input = document.getElementById(inputId);
 
-    const btn = event.target;
-    const originalText = btn.textContent;
-    btn.innerHTML = 'Saving...';
-    btn.classList.add('btn-loading');
-    btn.disabled = true;
+                if (input) {
+                    const val = parseFloat(input.value);
+                    if (!isNaN(val) && val >= 0) {
+                        myProfit[priceNet][b.size] = val;
+                    }
+                }
+            });
 
-    try {
-        // ✅ Save to server
-        const response = await fetch(`${BACKEND}/reseller/save-profit`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                firebase_key: reseller.firebase_key,
-                profits: myProfit
-            })
-        });
-        const data = await response.json();
+            console.log('💰 Saving profits:', myProfit);
 
-        if (data.success) {
-            // ✅✅✅ CRITICAL: Save to localStorage as backup
-            const backupKey = `pdh_profits_${reseller.firebase_key}`;
-            localStorage.setItem(backupKey, JSON.stringify(myProfit));
-            console.log('💾 Saved to localStorage backup');
-            
-            showToast('✅ Prices saved to server + local backup!');
-            
-            // Reload profits from server to confirm
-            await loadMyProfitFromServer();
-        } else {
-            showToast('❌ ' + (data.error || 'Failed to save'));
-        }
-    } catch (e) {
-        console.error('Save error:', e);
-        // ✅ Even if server fails, save locally
-        const backupKey = `pdh_profits_${reseller.firebase_key}`;
-        localStorage.setItem(backupKey, JSON.stringify(myProfit));
-        showToast('⚠️ Saved locally only (offline mode)');
-    }
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.innerHTML = 'Saving...';
+            btn.classList.add('btn-loading');
+            btn.disabled = true;
 
-    btn.innerHTML = originalText;
-    btn.classList.remove('btn-loading');
-    btn.disabled = false;
-}
-        // Force sync from server (overwrites local)
-async function syncFromServer() {
-    showToast('🔄 Syncing from server...');
-    const btn = event.target;
-    const originalText = btn.textContent;
-    btn.textContent = 'Syncing...';
-    btn.disabled = true;
-    
-    try {
-        // Force reload from server
-        let fbKey = reseller?.firebase_key;
-        if (!fbKey) {
-            const saved = localStorage.getItem('pdh_r');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                fbKey = parsed.firebase_key || parsed.id;
-            }
-        }
-        
-        if (fbKey) {
-            const res = await fetch(`${BACKEND}/reseller/dashboard/${fbKey}`);
-            const data = await res.json();
-            
-            if (data.success && data.reseller && data.reseller.profit_markup) {
-                myProfit = data.reseller.profit_markup;
-                // Update local backup
-                const backupKey = `pdh_profits_${fbKey}`;
+            try {
+                // ✅ Save to server
+                const response = await fetch(`${BACKEND}/reseller/save-profit`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firebase_key: reseller.firebase_key,
+                        profits: myProfit
+                    })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // ✅✅✅ CRITICAL: Save to localStorage as backup
+                    const backupKey = `pdh_profits_${reseller.firebase_key}`;
+                    localStorage.setItem(backupKey, JSON.stringify(myProfit));
+                    console.log('💾 Saved to localStorage backup');
+
+                    showToast('✅ Prices saved to server + local backup!');
+
+                    // Reload profits from server to confirm
+                    await loadMyProfitFromServer();
+                } else {
+                    showToast('❌ ' + (data.error || 'Failed to save'));
+                }
+            } catch (e) {
+                console.error('Save error:', e);
+                // ✅ Even if server fails, save locally
+                const backupKey = `pdh_profits_${reseller.firebase_key}`;
                 localStorage.setItem(backupKey, JSON.stringify(myProfit));
-                renderPriceGrid(priceNet);
-                showToast('✅ Synced latest prices from server!');
-            } else {
-                showToast('⚠️ No server data found');
+                showToast('⚠️ Saved locally only (offline mode)');
             }
+
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-loading');
+            btn.disabled = false;
         }
-    } catch (e) {
-        console.error('Sync error:', e);
-        showToast('❌ Sync failed');
-    }
-    
-    btn.textContent = originalText;
-    btn.disabled = false;
-}
+        // Force sync from server (overwrites local)
+        async function syncFromServer() {
+            showToast('🔄 Syncing from server...');
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Syncing...';
+            btn.disabled = true;
+
+            try {
+                // Force reload from server
+                let fbKey = reseller?.firebase_key;
+                if (!fbKey) {
+                    const saved = localStorage.getItem('pdh_r');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        fbKey = parsed.firebase_key || parsed.id;
+                    }
+                }
+
+                if (fbKey) {
+                    const res = await fetch(`${BACKEND}/reseller/dashboard/${fbKey}`);
+                    const data = await res.json();
+
+                    if (data.success && data.reseller && data.reseller.profit_markup) {
+                        myProfit = data.reseller.profit_markup;
+                        // Update local backup
+                        const backupKey = `pdh_profits_${fbKey}`;
+                        localStorage.setItem(backupKey, JSON.stringify(myProfit));
+                        renderPriceGrid(priceNet);
+                        showToast('✅ Synced latest prices from server!');
+                    } else {
+                        showToast('⚠️ No server data found');
+                    }
+                }
+            } catch (e) {
+                console.error('Sync error:', e);
+                showToast('❌ Sync failed');
+            }
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
         function updateWdPreview() {
             const amt = parseFloat(document.getElementById('wd-amount').value || 0);
             if (amt < 10) { document.getElementById('wd-preview').textContent = 'Minimum withdrawal is GHS 10'; return; }

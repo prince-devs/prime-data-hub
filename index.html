@@ -1491,6 +1491,7 @@
             margin-bottom: 18px;
         }
 
+
         .net-btn {
             background: var(--bg2);
             border: 1px solid var(--border2);
@@ -1521,6 +1522,48 @@
 
         .net-btn.active .net-btn-name {
             color: var(--purple-light);
+        }
+
+        /* Withdrawal Status Styles */
+        .wd-status {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 100px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .wd-status.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .wd-status.approved {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .wd-status.rejected {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .wd-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            padding: 14px;
+            transition: all 0.2s;
+        }
+
+        .wd-item:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            background: rgba(124, 58, 237, 0.03);
         }
 
         .at-type {
@@ -1799,6 +1842,68 @@
 
         .wa-fab:hover {
             transform: scale(1.08);
+        }
+
+        /* Trial Warning Banner Styles */
+        .trial-warning {
+            background: linear-gradient(135deg, #f59e0b20, #f59e0b08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .trial-warning.urgent {
+            background: linear-gradient(135deg, #ef444420, #ef444408);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+
+        .trial-warning.success {
+            background: linear-gradient(135deg, #10b98120, #10b98108);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .trial-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .trial-icon {
+            font-size: 24px;
+        }
+
+        .trial-text {
+            flex: 1;
+        }
+
+        .trial-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .trial-message {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pay-now-btn {
+            background: var(--purple);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .pay-now-btn:hover {
+            background: var(--purple-light);
+            transform: translateY(-1px);
         }
 
         /* ════════════════════════════════════════
@@ -2083,6 +2188,42 @@
                 display: flex;
             }
 
+            /* Password strength indicator */
+            .password-strength {
+                height: 4px;
+                background: var(--border);
+                border-radius: 2px;
+                margin-top: 8px;
+                overflow: hidden;
+            }
+
+            .password-strength-bar {
+                width: 0%;
+                height: 100%;
+                transition: width 0.3s, background 0.3s;
+            }
+
+            .password-strength-bar.weak {
+                width: 33%;
+                background: #ef4444;
+            }
+
+            .password-strength-bar.medium {
+                width: 66%;
+                background: #f59e0b;
+            }
+
+            .password-strength-bar.strong {
+                width: 100%;
+                background: #10b981;
+            }
+
+            .password-hint {
+                font-size: 10px;
+                margin-top: 4px;
+                color: var(--text-muted);
+            }
+
             .topbar-store-label {
                 display: none;
             }
@@ -2135,6 +2276,12 @@
                 </div>
                 <button class="btn-primary" onclick="doLogin()">Sign In →</button>
                 <div class="auth-error" id="login-error"></div>
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="#" onclick="showForgotModal(); return false;"
+                        style="color: var(--purple-light); font-size: 11px; text-decoration: none;">Forgot Password?</a>
+                </div>
+
+
             </div>
 
             <!-- Register Form -->
@@ -2246,6 +2393,18 @@
                 </div>
 
                 <div class="content">
+                    <!-- TRIAL WARNING BANNER -->
+                    <div id="trial-warning" class="trial-warning" style="display: none;">
+                        <div class="trial-content">
+                            <span class="trial-icon" id="trial-icon">🎉</span>
+                            <div class="trial-text">
+                                <div class="trial-title" id="trial-title">14-Day Free Trial Active</div>
+                                <div class="trial-message" id="trial-message"></div>
+                            </div>
+                            <button class="pay-now-btn" id="pay-now-btn" onclick="showActivationPayment()"
+                                style="display: none;">Pay Now →</button>
+                        </div>
+                    </div>
 
                     <!-- ── DASHBOARD TAB ── -->
                     <div class="tab-content active" id="tab-dashboard">
@@ -2334,63 +2493,6 @@
                             </div>
                         </div>
 
-                        <!-- ── COMMISSIONS CARD (for Level 1 resellers only) ── -->
-                        <div class="section-card" id="commissions-card" style="display: none;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                                <div>
-                                    <div class="section-title">[S] Team Commissions (5%)</div>
-                                    <div class="section-sub">Earn 5% from every sale your sub-resellers make</div>
-                                </div>
-                                <div
-                                    style="background: rgba(124, 58, 237, 0.15); padding: 8px 16px; border-radius: 12px; text-align: center;">
-                                    <div style="font-size: 10px; color: var(--text-muted);">Total Earned</div>
-                                    <div style="font-size: 22px; font-weight: 700; color: var(--purple-light);"
-                                        id="total-commission-amount">GHS 0.00</div>
-                                </div>
-                            </div>
-
-                            <div
-                                style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 14px; margin: 12px 0;">
-                                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                    <span style="font-size: 24px;">🎯</span>
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 12px; font-weight: 500; color: var(--success);">Start
-                                            Earning More!</div>
-                                        <div style="font-size: 11px; color: var(--text-muted);">Register Level 2
-                                            resellers using your link and earn 5% on all their sales</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div
-                                style="background: var(--surface); border-radius: 10px; padding: 12px; margin-top: 8px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                                    <div style="flex: 1;">
-                                        <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Your
-                                            Referral Link</div>
-                                        <div style="display: flex; gap: 8px;">
-                                            <input type="text" id="commission-ref-link" readonly
-                                                style="flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11px; color: var(--text); font-family: monospace;">
-                                            <button onclick="copyCommissionLink()"
-                                                style="background: var(--purple); border: none; border-radius: 8px; padding: 8px 15px; color: white; cursor: pointer; font-size: 11px;">Copy</button>
-                                        </div>
-                                    </div>
-                                    <button class="link-btn whatsapp" onclick="shareCommissionLink()"
-                                        style="padding: 8px 16px;">[W] Share on WhatsApp</button>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
-                                <div
-                                    style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
-                                    <span>[S] Commission Rate: <strong style="color: var(--success);">5%</strong></span>
-                                    <span>👥 Team Members: <strong id="commission-team-count">0</strong></span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
                     <!-- ── PRICES TAB ── -->
@@ -2434,6 +2536,7 @@
                             <div class="wallet-balance-amount" id="wallet-bal">GHS 0.00</div>
                             <div class="wallet-balance-sub">Ready to withdraw</div>
                         </div>
+
                         <div class="section-card">
                             <div class="section-title" style="margin-bottom:4px;">Request Withdrawal</div>
                             <div class="section-sub">Withdraw your earnings to Mobile Money</div>
@@ -2453,7 +2556,20 @@
                             </div>
                             <button class="withdraw-btn" onclick="requestWithdrawal()">Request Withdrawal</button>
                         </div>
-                        <div id="wd-history"></div>
+
+                        <!-- WITHDRAWAL HISTORY SECTION -->
+                        <div id="wd-history">
+                            <div class="section-card" style="margin-top: 14px;">
+                                <div class="section-title" style="margin-bottom: 12px;">💰 Withdrawal History</div>
+                                <div id="wd-history-list">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">📭</div>
+                                        <div class="empty-title">No withdrawal requests yet</div>
+                                        <div class="empty-sub">Your withdrawal history will appear here</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- ── SETTINGS TAB ── -->
@@ -2797,6 +2913,79 @@
     </div>
 
     <div class="toast" id="toast"></div>
+    <!-- FORGOT PASSWORD MODAL (Step 1 - Enter Email) -->
+    <div class="modal-overlay" id="forgot-modal">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-handle"></div>
+            <div style="text-align:center;margin-bottom:14px;">
+                <div class="modal-title">🔐 Forgot Password</div>
+                <div class="modal-sub">Enter your email to receive a reset link</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input class="form-input" type="email" id="forgot-email" placeholder="your@email.com">
+            </div>
+            <button class="modal-btn" onclick="sendResetLink()">Send Reset Link →</button>
+            <button class="modal-btn"
+                style="background:var(--surface);color:var(--text-muted);border:1px solid var(--border);margin-top:8px;"
+                onclick="closeForgotModal()">Cancel</button>
+            <div id="forgot-message" style="margin-top:12px;font-size:12px;text-align:center;display:none;"></div>
+        </div>
+    </div>
+
+    <!-- RESET PASSWORD MODAL (Step 2 - Enter New Password) -->
+    <div class="modal-overlay" id="reset-modal">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-handle"></div>
+            <div style="text-align:center;margin-bottom:14px;">
+                <div class="modal-title">🔐 Create New Password</div>
+                <div class="modal-sub" id="reset-email-display"></div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input class="form-input" type="password" id="reset-new-password" placeholder="Min 6 characters"
+                    oninput="checkPasswordStrength()">
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strength-bar"></div>
+                </div>
+                <div class="password-hint" id="password-hint">Use 6+ characters</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input class="form-input" type="password" id="reset-confirm-password"
+                    placeholder="Confirm your password">
+            </div>
+            <button class="modal-btn" onclick="submitNewPassword()">Reset Password →</button>
+            <button class="modal-btn"
+                style="background:var(--surface);color:var(--text-muted);border:1px solid var(--border);margin-top:8px;"
+                onclick="closeResetModal()">Cancel</button>
+            <div id="reset-message" style="margin-top:12px;font-size:12px;text-align:center;display:none;"></div>
+        </div>
+    </div>
+    <!-- ACTIVATION PAYMENT MODAL -->
+    <div class="modal-overlay" id="activation-payment-modal">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-handle"></div>
+            <div style="text-align:center;margin-bottom:14px;">
+                <div class="modal-title">💳 Activate Your Account</div>
+                <div class="modal-sub" id="activation-amount-display"></div>
+            </div>
+            <div
+                style="background: var(--purple-dim); border-radius: 10px; padding: 16px; margin-bottom: 16px; text-align: center;">
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">One-time Activation Fee
+                </div>
+                <div style="font-size: 32px; font-weight: 700; color: var(--purple-light);" id="activation-fee-amount">
+                    GHS 0</div>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 8px;">✓ Lifetime access ✓ All
+                    features ✓ No monthly fees</div>
+            </div>
+            <button class="modal-btn" id="pay-activation-btn" onclick="processActivationPayment()">Pay Now →</button>
+            <button class="modal-btn"
+                style="background:var(--surface);color:var(--text-muted);border:1px solid var(--border);margin-top:8px;"
+                onclick="closeActivationPaymentModal()">Cancel</button>
+            <div id="activation-message" style="margin-top:12px;font-size:12px;text-align:center;display:none;"></div>
+        </div>
+    </div>
 
 
     <!-- ══════════════════════════════════════════════════════════ -->
@@ -3007,6 +3196,132 @@
             document.getElementById('reg-store').value = val;
             document.getElementById('store-preview').textContent = val ? `You'll receive a unique store code after registration` : '';
         }
+        // ── TRIAL AND ACTIVATION FUNCTIONS ──
+
+        function updateTrialWarning(daysLeft, fee, level) {
+            const warning = document.getElementById('trial-warning');
+            const title = document.getElementById('trial-title');
+            const message = document.getElementById('trial-message');
+            const icon = document.getElementById('trial-icon');
+            const payBtn = document.getElementById('pay-now-btn');
+
+            if (!warning) return;
+
+            // Trial ended (daysLeft negative means expired)
+            if (daysLeft < 0) {
+                warning.style.display = 'block';
+                warning.classList.add('urgent');
+                title.innerHTML = '🔴 ACCOUNT EXPIRED!';
+                message.innerHTML = `Your free trial has ended. Pay GHS ${fee} to activate your account and continue selling data.`;
+                icon.innerHTML = '🔴';
+                payBtn.style.display = 'block';
+                return;
+            }
+
+            // Last day (daysLeft === 0 means today is last day)
+            if (daysLeft === 0) {
+                warning.style.display = 'block';
+                warning.classList.add('urgent');
+                title.innerHTML = '🔴 LAST DAY OF FREE TRIAL!';
+                message.innerHTML = `⚠️ Your 14-day free trial ends TODAY! Pay GHS ${fee} now to keep your account active.`;
+                icon.innerHTML = '🔴';
+                payBtn.style.display = 'block';
+                return;
+            }
+
+            // Last 3 days (urgent warning)
+            if (daysLeft <= 3) {
+                warning.style.display = 'block';
+                warning.classList.add('urgent');
+                title.innerHTML = `⚠️ ${daysLeft} DAY${daysLeft !== 1 ? 'S' : ''} LEFT IN FREE TRIAL`;
+                message.innerHTML = `Your free trial ends in ${daysLeft} day${daysLeft !== 1 ? 's' : ''}. Pay GHS ${fee} to continue using your account after trial.`;
+                icon.innerHTML = '⚠️';
+                payBtn.style.display = 'block';
+                return;
+            }
+
+            // Normal trial (calm reminder)
+            warning.style.display = 'block';
+            warning.classList.remove('urgent');
+            warning.classList.add('success');
+            title.innerHTML = '🎉 14-Day Free Trial Active';
+            message.innerHTML = `You have ${daysLeft} days left in your free trial. No payment needed until trial ends. Level ${level} activation fee: GHS ${fee}.`;
+            icon.innerHTML = '🎉';
+            payBtn.style.display = 'none';
+        }
+
+        function showActivationPayment() {
+            const activationFee = reseller?.activation_fee || (reseller?.level === 1 ? 50 : 20);
+            const level = reseller?.level || 2;
+
+            document.getElementById('activation-fee-amount').innerHTML = `GHS ${activationFee}`;
+            document.getElementById('activation-amount-display').innerHTML = `Pay GHS ${activationFee} to activate your Level ${level} account`;
+            document.getElementById('activation-payment-modal').classList.add('open');
+            document.getElementById('activation-message').style.display = 'none';
+        }
+
+        function closeActivationPaymentModal() {
+            document.getElementById('activation-payment-modal').classList.remove('open');
+        }
+
+        async function processActivationPayment() {
+            const btn = document.getElementById('pay-activation-btn');
+            const originalText = btn.textContent;
+            const messageEl = document.getElementById('activation-message');
+
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+            messageEl.style.display = 'none';
+
+            try {
+                const response = await fetch(`${BACKEND}/reseller/pay-activation`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firebase_key: reseller.firebase_key })
+                });
+
+                const data = await response.json();
+
+                if (data.success && data.authorization_url) {
+                    // Redirect to Paystack payment page
+                    window.location.href = data.authorization_url;
+                } else {
+                    messageEl.textContent = '❌ ' + (data.error || 'Payment initialization failed');
+                    messageEl.style.color = 'var(--danger)';
+                    messageEl.style.display = 'block';
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                messageEl.textContent = '❌ Connection error. Please try again.';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // Check payment success on return from Paystack
+        function checkActivationPaymentSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            const reference = urlParams.get('reference');
+
+            if (status === 'success' && reference) {
+                showToast('✅ Payment successful! Your account is now activated.');
+                // Refresh user data
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            }
+        }
+
+        // Call this when page loads
+        window.addEventListener('load', () => {
+            checkURL();
+            handleResetFromEmail();
+            checkActivationPaymentSuccess();
+        });
 
         async function doLogin() {
             const btn = document.querySelector('#login-form .btn-primary');
@@ -3029,6 +3344,15 @@
                     await loadBasePrices();
                     await loadMyProfitFromServer();
                     showApp();
+
+                    // Add trial warning if days left are provided
+                    if (data.trial_days_left !== undefined && data.trial_days_left !== null) {
+                        updateTrialWarning(data.trial_days_left, data.activation_fee || (reseller.level === 1 ? 50 : 20), reseller.level);
+                    }
+                } else if (data.error === 'TRIAL_EXPIRED') {
+                    // Trial expired - show payment modal
+                    showToast(data.message);
+                    showActivationPayment();
                 } else {
                     showErr('login-error', data.error || 'Invalid credentials');
                     btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
@@ -3042,61 +3366,8 @@
         // COMMISSIONS CARD FUNCTIONS
         // ============================================
 
-        async function updateCommissionsCard() {
-            // Only show for Level 1 resellers
-            if (!reseller || reseller.level !== 1 || !reseller.can_recruit) {
-                const card = document.getElementById('commissions-card');
-                if (card) card.style.display = 'none';
-                return;
-            }
 
-            try {
-                const res = await fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`);
-                const data = await res.json();
 
-                if (data.success) {
-                    const card = document.getElementById('commissions-card');
-                    if (card) card.style.display = 'block';
-
-                    // Get total commission from the response
-                    // If your backend doesn't send total_commission yet, we calculate it
-                    let totalCommission = 0;
-                    if (data.sub_resellers && data.sub_resellers.length > 0) {
-                        data.sub_resellers.forEach(sub => {
-                            totalCommission += (sub.total_profit || 0) * 0.05;
-                        });
-                    }
-
-                    document.getElementById('total-commission-amount').textContent = `GHS ${totalCommission.toFixed(2)}`;
-
-                    const teamCount = data.sub_resellers ? data.sub_resellers.length : 0;
-                    document.getElementById('commission-team-count').textContent = teamCount;
-
-                    // Set the referral link
-                    const refLink = document.getElementById('commission-ref-link');
-                    if (refLink) {
-                        refLink.value = `${PORTAL_URL}/?ref=${reseller.access_code}`;
-                    }
-                }
-            } catch (e) {
-                console.error('Error updating commissions card:', e);
-            }
-        }
-
-        function copyCommissionLink() {
-            const link = document.getElementById('commission-ref-link');
-            if (link) {
-                link.select();
-                document.execCommand('copy');
-                showToast('[✓] Referral link copied! Share to recruit Level 2 resellers');
-            }
-        }
-
-        function shareCommissionLink() {
-            const link = `${PORTAL_URL}/?ref=${reseller.access_code}`;
-            const msg = encodeURIComponent(`🚀 Become a Level 2 Reseller with Byvox Data!\n\nJoin using this link: ${link}\n\nEarn 5% commission on all your sales! Start selling data bundles in Ghana today! 🇬🇭`);
-            window.open(`https://wa.me/?text=${msg}`, '_blank');
-        }
 
         async function doRegister() {
             const btn = document.querySelector('#register-form .btn-primary');
@@ -3143,6 +3414,7 @@
         }
 
         function doLogout() {
+            stopInactivityTimer();  // ✅ Make sure this line is here
             reseller = null;
             localStorage.removeItem('pdh_r');
             document.getElementById('auth-page').style.display = 'flex';
@@ -3165,34 +3437,142 @@
             loadDashboard();
             loadMomoSettings();
 
+            // ✅ START THE SESSION TIMER (only once, without stopping it)
+            startInactivityTimer();
+
             // [✓] NEW LOGIC: Check approval status
             const isApproved = reseller.is_approved === true;
             const storeLinkCard = document.querySelector('.store-link-card');
             const pendingCard = document.getElementById('pending-approval-card');
 
             if (!isApproved) {
-                // Hide store link, show pending approval message (but keep dashboard visible)
                 if (storeLinkCard) storeLinkCard.style.display = 'none';
                 if (pendingCard) pendingCard.style.display = 'block';
-
-                // Also hide the store link from the dashboard stats area if needed
                 showToast('⚠️ Your store is pending admin approval. You can set prices but the store link is hidden until approved.');
             } else {
-                // Show store link, hide pending message
                 if (storeLinkCard) storeLinkCard.style.display = 'block';
                 if (pendingCard) pendingCard.style.display = 'none';
             }
 
-            // Load profits and prices (allowed for pending users too - they can set up their prices)
             loadMyProfitFromServer().then(() => {
                 loadBasePrices().then(() => {
                     renderPriceGrid('mtn');
                 });
             });
-            updateCommissionsCard();
-
             if (reseller.level === 1 && reseller.can_recruit) {
                 setTimeout(() => loadTeamData().catch(e => console.log('Team load skipped:', e)), 500);
+            }
+        }
+        // Function to load withdrawal history with status
+        async function loadWithdrawalHistory() {
+            if (!reseller?.firebase_key) return;
+
+            try {
+                const res = await fetch(`${BACKEND}/reseller/withdrawals/${reseller.firebase_key}`);
+                const data = await res.json();
+
+                if (data.success && data.withdrawals && data.withdrawals.length > 0) {
+                    const historyHtml = `
+                <div class="section-card" style="margin-top: 14px;">
+                    <div class="section-title" style="margin-bottom: 12px;">💰 Withdrawal History</div>
+                    ${data.withdrawals.map(wd => `
+                        <div class="wd-item" style="margin-bottom: 10px;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                                    <span style="font-size: 14px; font-weight: 600; color: var(--white);">
+                                        GHS ${wd.amount_requested.toFixed(2)}
+                                    </span>
+                                    <span class="wd-status ${wd.status}">${wd.status === 'pending' ? '⏳ PENDING' : (wd.status === 'approved' ? '✅ SENT' : '❌ REJECTED')}</span>
+                                </div>
+                                <div style="font-size: 11px; color: var(--text-muted);">
+                                    To: ${wd.momo_number} • Requested: ${new Date(wd.created_at).toLocaleDateString('en-GH', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                                </div>
+                                <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+                                    Amount sent: GHS ${wd.amount_to_pay.toFixed(2)} (Fee: GHS ${wd.platform_cut.toFixed(2)})
+                                </div>
+                                ${wd.status === 'approved' && wd.approved_at ? `
+                                    <div style="font-size: 10px; color: var(--success); margin-top: 3px;">
+                                        ✓ Approved & Sent: ${new Date(wd.approved_at).toLocaleDateString('en-GH', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                    </div>
+                                ` : ''}
+                                ${wd.status === 'rejected' && wd.rejection_reason ? `
+                                    <div style="font-size: 10px; color: var(--danger); margin-top: 3px;">
+                                        Rejected: ${wd.rejection_reason}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+                    document.getElementById('wd-history').innerHTML = historyHtml;
+                } else {
+                    document.getElementById('wd-history').innerHTML = `
+                <div class="section-card" style="margin-top: 14px;">
+                    <div class="section-title" style="margin-bottom: 12px;">💰 Withdrawal History</div>
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-title">No withdrawal requests yet</div>
+                        <div class="empty-sub">Your withdrawal history will appear here</div>
+                    </div>
+                </div>
+            `;
+                }
+            } catch (e) {
+                console.error('Error loading withdrawal history:', e);
+            }
+        }
+
+
+        // Helper function to reset button
+        function resetWithdrawButton(btn, originalText) {
+            btn.textContent = originalText;
+            btn.classList.remove('btn-loading');
+            btn.disabled = false;
+        }
+
+        // Update loadDashboard function to include withdrawal history
+        async function loadDashboard() {
+            if (!reseller?.firebase_key) return;
+            try {
+                const res = await fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`);
+                const data = await res.json();
+                if (!data.success) return;
+
+                reseller.wallet_balance = data.reseller.wallet_balance;
+                reseller.total_withdrawn = data.reseller.total_withdrawn;
+                reseller.total_profit = data.reseller.total_profit || 0;
+                updateWallet();
+
+                const myOrders = data.orders || [];
+                document.getElementById('dash-orders').textContent = myOrders.length;
+                document.getElementById('dash-profit').textContent = `GHS ${(reseller.total_profit || 0).toFixed(2)}`;
+                document.getElementById('dash-withdrawn').textContent = `GHS ${(reseller.total_withdrawn || 0).toFixed(2)}`;
+
+                // Render orders
+                const renderOrders = (list) => list.length === 0
+                    ? `<div class="empty-state"><div class="empty-icon">[O]</div><div class="empty-title">No orders yet</div><div class="empty-sub">Share your store link to get sales</div></div>`
+                    : list.map(o => `
+          <div class="order-item">
+            <div>
+              <div class="order-ref">${o.reference || 'N/A'}</div>
+              <div class="order-detail">${o.network} · ${o.bundle} · ${o.recipient}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:13px;font-weight:500;color:var(--white);">GHS ${(o.amount_paid || 0).toFixed(2)}</div>
+              <div style="font-size:10px;color:var(--success);font-weight:500;">+GHS ${(o.reseller_profit || 0).toFixed(2)}</div>
+              <div class="order-status ${o.status}">${o.status}</div>
+            </div>
+          </div>`).join('');
+
+                document.getElementById('dash-recent').innerHTML = renderOrders(myOrders.slice(0, 5));
+                document.getElementById('all-orders').innerHTML = renderOrders(myOrders);
+
+                // Load withdrawal history
+                await loadWithdrawalHistory();
+
+            } catch (e) {
+                console.error('Dashboard error:', e);
             }
         }
         function showTab(tab, el) {
@@ -3208,14 +3588,18 @@
 
             if (tab === 'team') loadTeamData();
             if (tab === 'prices') {
-                // [✓] CRITICAL FIX: Load profits BEFORE rendering prices
                 loadMyProfitFromServer().then(() => {
                     loadBasePrices().then(() => renderPriceGrid(priceNet));
                 });
             }
-            if (tab === 'wallet') loadDashboard();
+            if (tab === 'wallet') {
+                loadDashboard();
+                loadWithdrawalHistory();
+                startWithdrawalPolling();
+            } else {
+                stopWithdrawalPolling();
+            }
         }
-
         function updateWallet() {
             const b = (reseller?.wallet_balance || 0).toFixed(2);
             document.getElementById('app-wallet').textContent = `GHS ${b}`;
@@ -3267,71 +3651,28 @@
             window.open(getStoreUrl(), '_blank');
         }
 
-        async function loadDashboard() {
-            if (!reseller?.firebase_key) return;
-            try {
-                const res = await fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`);
-                const data = await res.json();
-                if (!data.success) return;
 
-                reseller.wallet_balance = data.reseller.wallet_balance;
-                reseller.total_withdrawn = data.reseller.total_withdrawn;
-                reseller.total_profit = data.reseller.total_profit || 0;
-                updateWallet();
+        // Check for pending withdrawal status every 30 seconds when on wallet tab
+        let withdrawalPolling = null;
 
-                const myOrders = data.orders || [];
-                document.getElementById('dash-orders').textContent = myOrders.length;
-                document.getElementById('dash-profit').textContent = `GHS ${(reseller.total_profit || 0).toFixed(2)}`;
-                document.getElementById('dash-withdrawn').textContent = `GHS ${(reseller.total_withdrawn || 0).toFixed(2)}`;
+        function startWithdrawalPolling() {
+            if (withdrawalPolling) clearInterval(withdrawalPolling);
 
-                const renderOrders = (list) => list.length === 0
-                    ? `<div class="empty-state"><div class="empty-icon">[O]</div><div class="empty-title">No orders yet</div><div class="empty-sub">Share your store link to get sales</div></div>`
-                    : list.map(o => `
-          <div class="order-item">
-            <div>
-              <div class="order-ref">${o.reference || 'N/A'}</div>
-              <div class="order-detail">${o.network} · ${o.bundle} · ${o.recipient}</div>
-            </div>
-            <div style="text-align:right">
-              <div style="font-size:13px;font-weight:500;color:var(--white);">GHS ${(o.amount_paid || 0).toFixed(2)}</div>
-              <div style="font-size:10px;color:var(--success);font-weight:500;">+GHS ${(o.reseller_profit || 0).toFixed(2)}</div>
-              <div class="order-status ${o.status}">${o.status}</div>
-            </div>
-          </div>`).join('');
-
-                document.getElementById('dash-recent').innerHTML = renderOrders(myOrders.slice(0, 5));
-                document.getElementById('all-orders').innerHTML = renderOrders(myOrders);
-
-                const wds = data.withdrawals || (data.reseller?.withdrawals ? Object.values(data.reseller.withdrawals) : []);
-                const wdSorted = wds.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-                if (wdSorted.length > 0) {
-                    document.getElementById('wd-history').innerHTML = `
-          <div class="section-card">
-            <div class="section-title" style="margin-bottom:12px;">Withdrawal History</div>
-            ${wdSorted.map(w => `
-              <div class="wd-item">
-                <div>
-                  <div style="font-size:14px;font-weight:500;color:var(--white);">GHS ${(w.amount_to_pay || 0).toFixed(2)}</div>
-                  <div style="font-size:10px;color:var(--text-muted);">To: ${w.momo_number} · ${new Date(w.created_at).toLocaleDateString('en-GH')}</div>
-                  <div style="font-size:10px;color:var(--text-muted);">Requested: GHS ${(w.amount_requested || 0).toFixed(2)}</div>
-                </div>
-                <span class="wd-status ${w.status}">${w.status}</span>
-              </div>`).join('')}
-          </div>`;
-                } else {
-                    document.getElementById('wd-history').innerHTML = '';
+            withdrawalPolling = setInterval(async () => {
+                const activeTab = document.querySelector('.tab-content.active');
+                if (activeTab && activeTab.id === 'tab-wallet') {
+                    await loadWithdrawalHistory();
                 }
+            }, 30000); // Check every 30 seconds
+        }
 
-                // [✓] Update commissions card for Level 1 resellers
-                if (reseller && reseller.level === 1 && reseller.can_recruit) {
-                    await updateCommissionsCard();
-                }
-
-            } catch (e) {
-                console.error('Dashboard error:', e);
+        function stopWithdrawalPolling() {
+            if (withdrawalPolling) {
+                clearInterval(withdrawalPolling);
+                withdrawalPolling = null;
             }
         }
+
 
         function showPriceNet(net, el) {
             priceNet = net;
@@ -4059,6 +4400,236 @@
         keepBackendAwake();
 
         window.addEventListener('load', () => { checkURL(); });
+        // ── SESSION TIMEOUT (Auto-logout after 30 minutes of inactivity) ──
+        let inactivityTimer;
+
+        function startInactivityTimer() {
+            resetInactivityTimer();
+
+            // Track user activity
+            const events = ['click', 'mousemove', 'keypress', 'touchstart', 'scroll'];
+            events.forEach(event => {
+                document.addEventListener(event, resetInactivityTimer);
+            });
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                // Only logout if user is logged in
+                if (reseller && document.getElementById('reseller-app').style.display === 'block') {
+                    showToast('🔒 Session expired. Please login again.');
+                    doLogout();
+                }
+            }, 30 * 60 * 1000); // 30 minutes
+        }
+
+        function stopInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            const events = ['click', 'mousemove', 'keypress', 'touchstart', 'scroll'];
+            events.forEach(event => {
+                document.removeEventListener(event, resetInactivityTimer);
+            });
+        }
+        // ── FORGOT PASSWORD FUNCTIONS ──
+
+        let resetToken = null;
+        let resetEmail = null;
+
+        function showForgotModal() {
+            document.getElementById('forgot-modal').classList.add('open');
+            document.getElementById('forgot-email').value = '';
+            document.getElementById('forgot-message').style.display = 'none';
+        }
+
+        function closeForgotModal() {
+            document.getElementById('forgot-modal').classList.remove('open');
+        }
+
+        function showResetModal(email, token) {
+            resetEmail = email;
+            resetToken = token;
+            document.getElementById('reset-email-display').innerHTML = `Reset password for <strong>${email}</strong>`;
+            document.getElementById('reset-new-password').value = '';
+            document.getElementById('reset-confirm-password').value = '';
+            document.getElementById('reset-message').style.display = 'none';
+            document.getElementById('strength-bar').className = 'password-strength-bar';
+            document.getElementById('password-hint').innerHTML = 'Use 6+ characters';
+            document.getElementById('reset-modal').classList.add('open');
+        }
+
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.remove('open');
+            resetToken = null;
+            resetEmail = null;
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('reset-new-password').value;
+            const bar = document.getElementById('strength-bar');
+            const hint = document.getElementById('password-hint');
+
+            if (password.length === 0) {
+                bar.className = 'password-strength-bar';
+                hint.innerHTML = 'Use 6+ characters';
+                return;
+            }
+
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+
+            if (strength <= 1) {
+                bar.className = 'password-strength-bar weak';
+                hint.innerHTML = 'Weak password';
+            } else if (strength <= 3) {
+                bar.className = 'password-strength-bar medium';
+                hint.innerHTML = 'Medium password';
+            } else {
+                bar.className = 'password-strength-bar strong';
+                hint.innerHTML = 'Strong password!';
+            }
+        }
+
+        async function sendResetLink() {
+            const email = document.getElementById('forgot-email').value.trim();
+            const messageEl = document.getElementById('forgot-message');
+            const btn = event.target;
+            const originalText = btn.textContent;
+
+            if (!email) {
+                messageEl.textContent = '❌ Please enter your email address';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                setTimeout(() => messageEl.style.display = 'none', 3000);
+                return;
+            }
+
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${BACKEND}/reseller/forgot-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await res.json();
+
+                // For security, always show success message even if email doesn't exist
+                messageEl.textContent = '✅ If your email is registered, you will receive a reset link.';
+                messageEl.style.color = 'var(--success)';
+                messageEl.style.display = 'block';
+
+                document.getElementById('forgot-email').value = '';
+
+                // Close modal after 3 seconds
+                setTimeout(() => {
+                    closeForgotModal();
+                    messageEl.style.display = 'none';
+                }, 3000);
+
+            } catch (e) {
+                messageEl.textContent = '❌ Connection error. Please try again.';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                setTimeout(() => messageEl.style.display = 'none', 3000);
+            }
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+
+        async function submitNewPassword() {
+            const newPassword = document.getElementById('reset-new-password').value;
+            const confirmPassword = document.getElementById('reset-confirm-password').value;
+            const messageEl = document.getElementById('reset-message');
+
+            if (!newPassword || newPassword.length < 6) {
+                messageEl.textContent = '❌ Password must be at least 6 characters';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                setTimeout(() => messageEl.style.display = 'none', 3000);
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                messageEl.textContent = '❌ Passwords do not match';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                setTimeout(() => messageEl.style.display = 'none', 3000);
+                return;
+            }
+
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Resetting...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${BACKEND}/reseller/reset-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: resetToken,
+                        email: resetEmail,
+                        new_password: newPassword
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    messageEl.textContent = '✅ Password reset successful! You can now login.';
+                    messageEl.style.color = 'var(--success)';
+                    messageEl.style.display = 'block';
+
+                    // Close modal and show login after 2 seconds
+                    setTimeout(() => {
+                        closeResetModal();
+                        showToast('✅ Password reset successful! Please login with your new password.');
+                        // Clear any existing session
+                        doLogout();
+                    }, 2000);
+                } else {
+                    messageEl.textContent = '❌ ' + data.error;
+                    messageEl.style.color = 'var(--danger)';
+                    messageEl.style.display = 'block';
+                    setTimeout(() => messageEl.style.display = 'none', 3000);
+                }
+            } catch (e) {
+                messageEl.textContent = '❌ Connection error. Please try again.';
+                messageEl.style.color = 'var(--danger)';
+                messageEl.style.display = 'block';
+                setTimeout(() => messageEl.style.display = 'none', 3000);
+            }
+
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+
+        // Function to handle reset link from email (if user clicks email link)
+        function handleResetFromEmail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const email = urlParams.get('email');
+
+            if (token && email) {
+                // Show reset modal directly
+                showResetModal(decodeURIComponent(email), token);
+                // Remove token from URL without refreshing
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        // Call this when page loads
+        window.addEventListener('load', () => {
+            checkURL();
+            handleResetFromEmail(); // Check for reset token in URL
+        });
     </script>
 </body>
 

@@ -12,6 +12,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         *,
         *::before,
@@ -295,6 +296,41 @@
         .btn-primary:active {
             transform: scale(0.98);
         }
+        /* Password field with eye icon */
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field input {
+    width: 100%;
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 16px;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: var(--purple-light);
+}
+
+.toggle-password i {
+    pointer-events: none;
+}
 
         .auth-error {
             background: var(--danger-dim);
@@ -2269,11 +2305,16 @@
                     <label class="form-label">Email</label>
                     <input class="form-input" type="email" id="login-email" placeholder="your@email.com">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input class="form-input" type="password" id="login-password" placeholder="Your password"
-                        onkeypress="if(event.key==='Enter')doLogin()">
-                </div>
+               <div class="form-group">
+    <label class="form-label">Password</label>
+    <div class="password-field">
+        <input class="form-input" type="password" id="login-password" placeholder="Your password"
+            onkeypress="if(event.key==='Enter')doLogin()">
+        <button type="button" class="toggle-password" onclick="toggleLoginPassword()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+</div>
                 <button class="btn-primary" onclick="doLogin()">Sign In →</button>
                 <div class="auth-error" id="login-error"></div>
                 <div style="text-align: center; margin-top: 16px;">
@@ -2306,11 +2347,14 @@
                         oninput="updateStorePreview()">
                     <div class="store-preview" id="store-preview"></div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input class="form-input" type="password" id="reg-password" placeholder="Create a password">
-                </div>
-                <input type="hidden" id="reg-referral" value="">
+             <div class="form-group"><label class="form-label">Password</label>
+    <div class="password-field">
+        <input class="form-input" type="password" id="reg-password" placeholder="Create a password">
+        <button type="button" class="toggle-password" onclick="toggleRegPassword()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+</div>      <input type="hidden" id="reg-referral" value="">
                 <button class="btn-primary" onclick="doRegister()">Create Account →</button>
                 <div class="auth-error" id="reg-error"></div>
                 <div class="auth-success" id="reg-success">[✓] Account created! Sign in now.</div>
@@ -2883,8 +2927,14 @@
                     <div style="font-size:9px;color:var(--text-muted);">Your unique store link:
                         byvoxdata.com/s/yourstorename</div>
                 </div>
-                <div class="form-group"><label class="form-label">Password</label><input class="form-input"
-                        type="password" id="reg-modal-password" placeholder="Create a password"></div>
+              <div class="form-group"><label class="form-label">Password</label>
+    <div class="password-field">
+        <input class="form-input" type="password" id="reg-modal-password" placeholder="Create a password">
+        <button type="button" class="toggle-password" onclick="toggleModalRegPassword()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+</div>
                 <button class="modal-btn" onclick="submitResellerRegistration()">Create Account →</button>
                 <div id="reg-modal-error"
                     style="display:none;color:var(--danger);font-size:11px;margin-top:10px;text-align:center;"></div>
@@ -2899,8 +2949,14 @@
                 </div>
                 <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email"
                         id="modal-login-email" placeholder="your@email.com"></div>
-                <div class="form-group"><label class="form-label">Password</label><input class="form-input"
-                        type="password" id="modal-login-password" placeholder="Your password"></div>
+               <div class="form-group"><label class="form-label">Password</label>
+    <div class="password-field">
+        <input class="form-input" type="password" id="modal-login-password" placeholder="Your password">
+        <button type="button" class="toggle-password" onclick="toggleModalLoginPassword()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+</div>
                 <button class="modal-btn" onclick="submitModalLogin()">Sign In →</button>
                 <div id="modal-login-error"
                     style="display:none;color:var(--danger);font-size:11px;margin-top:10px;text-align:center;"></div>
@@ -4107,6 +4163,58 @@ if (reseller.activation_paid !== true && reseller.trial_end_date) {
                 showStoreNotFound();
             }
         }
+        // Toggle password visibility with Font Awesome icons
+function toggleLoginPassword() {
+    const passwordInput = document.getElementById('login-password');
+    const icon = document.querySelector('#login-password + .toggle-password i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+function toggleRegPassword() {
+    const passwordInput = document.getElementById('reg-password');
+    const icon = document.querySelector('#reg-password + .toggle-password i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+function toggleModalLoginPassword() {
+    const passwordInput = document.getElementById('modal-login-password');
+    const icon = document.querySelector('#modal-login-password + .toggle-password i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+function toggleModalRegPassword() {
+    const passwordInput = document.getElementById('reg-modal-password');
+    const icon = document.querySelector('#reg-modal-password + .toggle-password i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
 
         function renderStoreBundles() {
             const list = getStoreBundles();

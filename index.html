@@ -3206,7 +3206,7 @@
             const payBtn = document.getElementById('pay-now-btn');
 
             if (!warning) return;
-
+           
             // Trial ended (daysLeft negative means expired)
             if (daysLeft < 0) {
                 warning.style.display = 'block';
@@ -3247,7 +3247,8 @@
             title.innerHTML = '🎉 14-Day Free Trial Active';
             message.innerHTML = `You have ${daysLeft} days left in your free trial. No payment needed until trial ends. Level ${level} activation fee: GHS ${fee}.`;
             icon.innerHTML = '🎉';
-            payBtn.style.display = 'none';
+            payBtn.style.display = 'block';
+            payBtn.textContent = 'Activate Now →';
         }
 
         function showActivationPayment() {
@@ -3302,19 +3303,29 @@
         }
 
         // Check payment success on return from Paystack
-        function checkActivationPaymentSuccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status');
-            const reference = urlParams.get('reference');
-
-            if (status === 'success' && reference) {
-                showToast('✅ Payment successful! Your account is now activated.');
-                // Refresh user data
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 2000);
-            }
+      function checkActivationPaymentSuccess() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('payment_status'); // ✅ matches callback_url
+    if (status === 'success') {
+        showToast('✅ Payment successful! Account activated.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+        // Reload reseller data from server
+        if (reseller?.firebase_key) {
+            fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        reseller.activation_paid = data.reseller.activation_paid;
+                        reseller.is_approved = data.reseller.is_approved;
+                        localStorage.setItem('pdh_r', JSON.stringify(reseller));
+                        // Hide the trial banner
+                        document.getElementById('trial-warning').style.display = 'none';
+                        showToast('✅ Account fully activated!');
+                    }
+                });
         }
+    }
+}
 
         // Call this when page loads
         window.addEventListener('load', () => {

@@ -3358,7 +3358,7 @@
                     btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
                 }
             } catch (e) {
-                showErr('login-error', 'Connection error');
+                showErr('login-error', 'Server is waking up — please wait 30 seconds and try again.');
                 btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
             }
         }
@@ -3402,7 +3402,7 @@
                     btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
                 }
             } catch (e) {
-                showErr('reg-error', 'Connection error');
+                showErr('login-error', 'Server is waking up — please wait 30 seconds and try again.');
                 btn.textContent = orig; btn.classList.remove('btn-loading'); btn.disabled = false;
             }
         }
@@ -4393,14 +4393,15 @@
         }
 
         function keepBackendAwake() {
+            // Ping immediately on load, then every 4 minutes
+            fetch(`${BACKEND}/health`).catch(() => { });
             setInterval(async () => {
                 try { await fetch(`${BACKEND}/health`); } catch (e) { }
             }, 4 * 60 * 1000);
         }
         keepBackendAwake();
 
-        window.addEventListener('load', () => { checkURL(); });
-        // ── SESSION TIMEOUT (Auto-logout after 30 minutes of inactivity) ──
+
         let inactivityTimer;
 
         function startInactivityTimer() {

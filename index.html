@@ -2267,6 +2267,19 @@
                                 <div class="stat-value" id="dash-withdrawn">GHS 0</div>
                             </div>
                         </div>
+                        <!-- Pending Approval Message (shown when store link is hidden) -->
+                        <div class="section-card" id="pending-approval-card"
+                            style="display: none; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 28px;">🔒</span>
+                                <div>
+                                    <div style="font-weight: 700; margin-bottom: 4px;">Store Link Pending Approval</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">Your store link is waiting
+                                        for admin approval. You can still set your prices and manage your account.
+                                        You'll be notified once your store is approved.</div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="store-link-card">
                             <div class="store-link-label">🔗 YOUR CUSTOMER STORE LINK</div>
@@ -3143,7 +3156,22 @@
             loadDashboard();
             loadMomoSettings();
 
-            // ✅ CRITICAL FIX: Load profits FIRST, then base prices
+            // ✅ HIDE STORE LINK FOR UNAPPROVED RESELLERS
+            const isApproved = reseller.is_approved === true;
+            const storeLinkCard = document.querySelector('.store-link-card');
+            const pendingCard = document.getElementById('pending-approval-card');
+
+            if (!isApproved) {
+                // Hide store link, show pending message
+                if (storeLinkCard) storeLinkCard.style.display = 'none';
+                if (pendingCard) pendingCard.style.display = 'block';
+            } else {
+                // Show store link, hide pending message
+                if (storeLinkCard) storeLinkCard.style.display = 'block';
+                if (pendingCard) pendingCard.style.display = 'none';
+            }
+
+            // Load profits and prices (allowed for pending users too)
             loadMyProfitFromServer().then(() => {
                 loadBasePrices().then(() => {
                     renderPriceGrid('mtn');

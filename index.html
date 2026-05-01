@@ -3346,9 +3346,14 @@
                     showApp();
 
                     // Add trial warning if days left are provided
-                    if (data.trial_days_left !== undefined && data.trial_days_left !== null) {
-                        updateTrialWarning(data.trial_days_left, data.activation_fee || (reseller.level === 1 ? 50 : 20), reseller.level);
-                    }
+                 // CORRECT - data is inside data.data
+if (data.data.trial_days_left !== undefined && data.data.trial_days_left !== null) {
+    updateTrialWarning(
+        data.data.trial_days_left, 
+        data.data.activation_fee || (reseller.level === 1 ? 50 : 20), 
+        reseller.level
+    );
+}
                 } else if (data.error === 'TRIAL_EXPIRED') {
                     // Trial expired - show payment modal
                     showToast(data.message);
@@ -3434,6 +3439,17 @@
 
             updateWallet();
             updateStoreLinks();
+            // Show trial banner for returning users
+if (reseller.activation_paid !== true && reseller.trial_end_date) {
+    const trialEnd = new Date(reseller.trial_end_date);
+    const now = new Date();
+    const daysLeft = Math.ceil((trialEnd - now) / (1000 * 60 * 60 * 24));
+    updateTrialWarning(
+        daysLeft,
+        reseller.activation_fee || (reseller.level === 1 ? 50 : 20),
+        reseller.level
+    );
+}
             loadDashboard();
             loadMomoSettings();
 

@@ -2166,7 +2166,7 @@
                 <input type="hidden" id="reg-referral" value="">
                 <button class="btn-primary" onclick="doRegister()">Create Account →</button>
                 <div class="auth-error" id="reg-error"></div>
-                <div class="auth-success" id="reg-success">✅ Account created! Sign in now.</div>
+                <div class="auth-success" id="reg-success">[✓] Account created! Sign in now.</div>
             </div>
         </div>
     </div>
@@ -2200,7 +2200,7 @@
                     <div class="sb-avatar" id="sb-avatar">B</div>
                     <div class="sb-name" id="sb-name">Reseller</div>
                     <div class="sb-store" id="sb-store">store</div>
-                    <div class="sb-wallet-chip" id="sb-wallet">💰 GHS 0.00</div>
+                    <div class="sb-wallet-chip" id="sb-wallet">[S] GHS 0.00</div>
                 </div>
 
                 <nav class="sidebar-nav">
@@ -2270,19 +2270,23 @@
                         <!-- Pending Approval Message (shown when store link is hidden) -->
                         <div class="section-card" id="pending-approval-card"
                             style="display: none; background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2);">
-                            <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                                 <span style="font-size: 28px;">🔒</span>
-                                <div>
+                                <div style="flex: 1;">
                                     <div style="font-weight: 700; margin-bottom: 4px;">Store Link Pending Approval</div>
                                     <div style="font-size: 12px; color: var(--text-muted);">Your store link is waiting
                                         for admin approval. You can still set your prices and manage your account.
                                         You'll be notified once your store is approved.</div>
                                 </div>
+                                <button onclick="checkApprovalStatus()"
+                                    style="background: var(--purple); border: none; border-radius: 8px; padding: 8px 16px; color: white; cursor: pointer; font-size: 11px; font-family: 'Inter', sans-serif;">
+                                    ↻ Check Status
+                                </button>
                             </div>
                         </div>
 
                         <div class="store-link-card">
-                            <div class="store-link-label">🔗 YOUR CUSTOMER STORE LINK</div>
+                            <div class="store-link-label">[L] YOUR CUSTOMER STORE LINK</div>
                             <div class="store-link-url" id="dash-store-url">Loading...</div>
                             <div class="store-link-btns">
                                 <button class="link-btn copy" onclick="copyLink()">◈ Copy Link</button>
@@ -2309,64 +2313,11 @@
                             </div>
                         </div>
                     </div>
-                    <!-- ── COMMISSIONS CARD (for Level 1 resellers only) ── -->
-                    <div class="section-card" id="commissions-card" style="display: none;">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                            <div>
-                                <div class="section-title">💰 Team Commissions (5%)</div>
-                                <div class="section-sub">Earn 5% from every sale your sub-resellers make</div>
-                            </div>
-                            <div
-                                style="background: rgba(124, 58, 237, 0.15); padding: 8px 16px; border-radius: 12px; text-align: center;">
-                                <div style="font-size: 10px; color: var(--text-muted);">Total Earned</div>
-                                <div style="font-size: 22px; font-weight: 700; color: var(--purple-light);"
-                                    id="total-commission-amount">GHS 0.00</div>
-                            </div>
-                        </div>
-
-                        <div
-                            style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 14px; margin: 12px 0;">
-                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                <span style="font-size: 24px;">🎯</span>
-                                <div style="flex: 1;">
-                                    <div style="font-size: 12px; font-weight: 500; color: var(--success);">Start Earning
-                                        More!</div>
-                                    <div style="font-size: 11px; color: var(--text-muted);">Register Level 2 resellers
-                                        using your link and earn 5% on all their sales</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="background: var(--surface); border-radius: 10px; padding: 12px; margin-top: 8px;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                                <div style="flex: 1;">
-                                    <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Your
-                                        Referral Link</div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <input type="text" id="commission-ref-link" readonly
-                                            style="flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11px; color: var(--text); font-family: monospace;">
-                                        <button onclick="copyCommissionLink()"
-                                            style="background: var(--purple); border: none; border-radius: 8px; padding: 8px 15px; color: white; cursor: pointer; font-size: 11px;">Copy</button>
-                                    </div>
-                                </div>
-                                <button class="link-btn whatsapp" onclick="shareCommissionLink()"
-                                    style="padding: 8px 16px;">📱 Share on WhatsApp</button>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
-                                <span>💰 Commission Rate: <strong style="color: var(--success);">5%</strong></span>
-                                <span>👥 Team Members: <strong id="commission-team-count">0</strong></span>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- ── ORDERS TAB ── -->
                     <div class="tab-content" id="tab-orders">
+
+                        <!-- Orders Section -->
                         <div class="section-card">
                             <div
                                 style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
@@ -2382,6 +2333,64 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- ── COMMISSIONS CARD (for Level 1 resellers only) ── -->
+                        <div class="section-card" id="commissions-card" style="display: none;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <div class="section-title">[S] Team Commissions (5%)</div>
+                                    <div class="section-sub">Earn 5% from every sale your sub-resellers make</div>
+                                </div>
+                                <div
+                                    style="background: rgba(124, 58, 237, 0.15); padding: 8px 16px; border-radius: 12px; text-align: center;">
+                                    <div style="font-size: 10px; color: var(--text-muted);">Total Earned</div>
+                                    <div style="font-size: 22px; font-weight: 700; color: var(--purple-light);"
+                                        id="total-commission-amount">GHS 0.00</div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 14px; margin: 12px 0;">
+                                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                    <span style="font-size: 24px;">🎯</span>
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 12px; font-weight: 500; color: var(--success);">Start
+                                            Earning More!</div>
+                                        <div style="font-size: 11px; color: var(--text-muted);">Register Level 2
+                                            resellers using your link and earn 5% on all their sales</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="background: var(--surface); border-radius: 10px; padding: 12px; margin-top: 8px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Your
+                                            Referral Link</div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" id="commission-ref-link" readonly
+                                                style="flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 11px; color: var(--text); font-family: monospace;">
+                                            <button onclick="copyCommissionLink()"
+                                                style="background: var(--purple); border: none; border-radius: 8px; padding: 8px 15px; color: white; cursor: pointer; font-size: 11px;">Copy</button>
+                                        </div>
+                                    </div>
+                                    <button class="link-btn whatsapp" onclick="shareCommissionLink()"
+                                        style="padding: 8px 16px;">[W] Share on WhatsApp</button>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+                                    <span>[S] Commission Rate: <strong style="color: var(--success);">5%</strong></span>
+                                    <span>👥 Team Members: <strong id="commission-team-count">0</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- ── PRICES TAB ── -->
@@ -2389,7 +2398,7 @@
                         <div class="section-card">
                             <div class="section-title">Set Your Prices</div>
                             <div class="section-sub">Admin sets the base price. You add your profit on top.</div>
-                            <div class="info-note">💡 Your selling price = Base price + Your profit. Customers pay your
+                            <div class="info-note">[i] Your selling price = Base price + Your profit. Customers pay your
                                 selling price.</div>
 
                             <div class="price-net-tabs">
@@ -2403,7 +2412,7 @@
 
                             <div id="price-grid">
                                 <div class="empty-state">
-                                    <div class="empty-icon">⏳</div>
+                                    <div class="empty-icon">[P]</div>
                                     <div class="empty-title">Loading prices...</div>
                                     <div class="empty-sub">Please wait</div>
                                 </div>
@@ -2513,7 +2522,7 @@
 
                             <div id="referral-section"
                                 style="display:none;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-                                <div class="section-title">🔗 Recruit Sub-Resellers</div>
+                                <div class="section-title">[L] Recruit Sub-Resellers</div>
                                 <div class="section-sub">Share this code to let others join as your sub-reseller</div>
                                 <div class="referral-box" style="margin-top:12px;">
                                     <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">Your Referral
@@ -2928,7 +2937,7 @@
                 return;
             }
 
-            // ✅ FIRST: Try to load from localStorage (instant)
+            // [✓] FIRST: Try to load from localStorage (instant)
             const backupKey = `pdh_profits_${fbKey}`;
             const localBackup = localStorage.getItem(backupKey);
             if (localBackup) {
@@ -2938,7 +2947,7 @@
                 } catch (e) { }
             }
 
-            // ✅ SECOND: Fetch from server (to get latest)
+            // [✓] SECOND: Fetch from server (to get latest)
             try {
                 console.log('🔄 Fetching latest from server...');
                 const res = await fetch(`${BACKEND}/reseller/dashboard/${fbKey}`);
@@ -2950,11 +2959,11 @@
                     myProfit = data.reseller.profit_markup;
                     // Update local backup with server data
                     localStorage.setItem(backupKey, JSON.stringify(myProfit));
-                    console.log('✅ Loaded from SERVER, updated local backup:', myProfit);
+                    console.log('[✓] Loaded from SERVER, updated local backup:', myProfit);
                 } else if (localBackup && Object.keys(myProfit).length > 0) {
                     // Server empty but we have local backup - keep local
                     console.log('⚠️ Using LOCAL backup (server had no data)');
-                    showToast('📱 Using saved local prices');
+                    showToast('[W] Using saved local prices');
                 } else {
                     console.log('❌ No profits found anywhere');
                     myProfit = {};
@@ -2964,7 +2973,7 @@
                 if (!localBackup || Object.keys(myProfit).length === 0) {
                     myProfit = {};
                 } else {
-                    console.log('✅ Using LOCAL backup due to server error');
+                    console.log('[✓] Using LOCAL backup due to server error');
                 }
             }
 
@@ -3079,7 +3088,7 @@
             if (link) {
                 link.select();
                 document.execCommand('copy');
-                showToast('✅ Referral link copied! Share to recruit Level 2 resellers');
+                showToast('[✓] Referral link copied! Share to recruit Level 2 resellers');
             }
         }
 
@@ -3156,22 +3165,25 @@
             loadDashboard();
             loadMomoSettings();
 
-            // ✅ HIDE STORE LINK FOR UNAPPROVED RESELLERS
+            // [✓] NEW LOGIC: Check approval status
             const isApproved = reseller.is_approved === true;
             const storeLinkCard = document.querySelector('.store-link-card');
             const pendingCard = document.getElementById('pending-approval-card');
 
             if (!isApproved) {
-                // Hide store link, show pending message
+                // Hide store link, show pending approval message (but keep dashboard visible)
                 if (storeLinkCard) storeLinkCard.style.display = 'none';
                 if (pendingCard) pendingCard.style.display = 'block';
+
+                // Also hide the store link from the dashboard stats area if needed
+                showToast('⚠️ Your store is pending admin approval. You can set prices but the store link is hidden until approved.');
             } else {
                 // Show store link, hide pending message
                 if (storeLinkCard) storeLinkCard.style.display = 'block';
                 if (pendingCard) pendingCard.style.display = 'none';
             }
 
-            // Load profits and prices (allowed for pending users too)
+            // Load profits and prices (allowed for pending users too - they can set up their prices)
             loadMyProfitFromServer().then(() => {
                 loadBasePrices().then(() => {
                     renderPriceGrid('mtn');
@@ -3196,7 +3208,7 @@
 
             if (tab === 'team') loadTeamData();
             if (tab === 'prices') {
-                // ✅ CRITICAL FIX: Load profits BEFORE rendering prices
+                // [✓] CRITICAL FIX: Load profits BEFORE rendering prices
                 loadMyProfitFromServer().then(() => {
                     loadBasePrices().then(() => renderPriceGrid(priceNet));
                 });
@@ -3209,12 +3221,19 @@
             document.getElementById('app-wallet').textContent = `GHS ${b}`;
             document.getElementById('dash-wallet').textContent = `GHS ${b}`;
             document.getElementById('wallet-bal').textContent = `GHS ${b}`;
-            document.getElementById('sb-wallet').textContent = `💰 GHS ${b}`;
+            document.getElementById('sb-wallet').textContent = `[S] GHS ${b}`;
         }
 
         function updateStoreLinks() {
-            const url = getStoreUrl();
-            document.getElementById('dash-store-url').textContent = url;
+            const isApproved = reseller.is_approved === true;
+            if (isApproved) {
+                const url = getStoreUrl();
+                const urlElement = document.getElementById('dash-store-url');
+                if (urlElement) urlElement.textContent = url;
+            } else {
+                const urlElement = document.getElementById('dash-store-url');
+                if (urlElement) urlElement.textContent = '🔒 Store link will appear after admin approval';
+            }
         }
 
         function getStoreUrl() {
@@ -3222,17 +3241,31 @@
         }
 
         function copyLink() {
+            if (reseller.is_approved !== true) {
+                showToast('🔒 Your store is pending approval. Store link will be available once approved.');
+                return;
+            }
             const url = getStoreUrl();
-            navigator.clipboard.writeText(url).then(() => showToast('✅ Store link copied!')).catch(() => showToast('Link: ' + url));
+            navigator.clipboard.writeText(url).then(() => showToast('[✓] Store link copied!')).catch(() => showToast('Link: ' + url));
         }
 
         function shareToWhatsApp() {
+            if (reseller.is_approved !== true) {
+                showToast('🔒 Your store is pending approval. Store link will be available once approved.');
+                return;
+            }
             const url = getStoreUrl();
-            const msg = `🎉 *Buy Data Instantly!* 🎉\n\nGet fast and affordable data bundles here:\n\n🔗 ${url}\n\nWe offer MTN, Telecel & AT bundles. Instant delivery! 🚀`;
+            const msg = `🎉 *Buy Data Instantly!* 🎉\n\nGet fast and affordable data bundles here:\n\n[L] ${url}\n\nWe offer MTN, Telecel & AT bundles. Instant delivery! 🚀`;
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function previewStore() { window.open(getStoreUrl(), '_blank'); }
+        function previewStore() {
+            if (reseller.is_approved !== true) {
+                showToast('🔒 Your store is pending approval. Store preview will be available once approved.');
+                return;
+            }
+            window.open(getStoreUrl(), '_blank');
+        }
 
         async function loadDashboard() {
             if (!reseller?.firebase_key) return;
@@ -3290,7 +3323,7 @@
                     document.getElementById('wd-history').innerHTML = '';
                 }
 
-                // ✅ Update commissions card for Level 1 resellers
+                // [✓] Update commissions card for Level 1 resellers
                 if (reseller && reseller.level === 1 && reseller.can_recruit) {
                     await updateCommissionsCard();
                 }
@@ -3364,7 +3397,7 @@
                 }
             });
 
-            console.log('💰 Saving profits:', myProfit);
+            console.log('[S] Saving profits:', myProfit);
 
             const btn = event.target;
             const originalText = btn.textContent;
@@ -3373,7 +3406,7 @@
             btn.disabled = true;
 
             try {
-                // ✅ Save to server
+                // [✓] Save to server
                 const response = await fetch(`${BACKEND}/reseller/save-profit`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -3385,12 +3418,12 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    // ✅✅✅ CRITICAL: Save to localStorage as backup
+                    //  CRITICAL: Save to localStorage as backup
                     const backupKey = `pdh_profits_${reseller.firebase_key}`;
                     localStorage.setItem(backupKey, JSON.stringify(myProfit));
                     console.log('💾 Saved to localStorage backup');
 
-                    showToast('✅ Prices saved to server + local backup!');
+                    showToast('[✓] Prices saved to server + local backup!');
 
                     // Reload profits from server to confirm
                     await loadMyProfitFromServer();
@@ -3399,7 +3432,7 @@
                 }
             } catch (e) {
                 console.error('Save error:', e);
-                // ✅ Even if server fails, save locally
+                // [✓] Even if server fails, save locally
                 const backupKey = `pdh_profits_${reseller.firebase_key}`;
                 localStorage.setItem(backupKey, JSON.stringify(myProfit));
                 showToast('⚠️ Saved locally only (offline mode)');
@@ -3438,7 +3471,7 @@
                         const backupKey = `pdh_profits_${fbKey}`;
                         localStorage.setItem(backupKey, JSON.stringify(myProfit));
                         renderPriceGrid(priceNet);
-                        showToast('✅ Synced latest prices from server!');
+                        showToast('[✓] Synced latest prices from server!');
                     } else {
                         showToast('⚠️ No server data found');
                     }
@@ -3480,7 +3513,7 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    showToast(`✅ Request sent! You receive GHS ${data.amount_to_pay.toFixed(2)}`);
+                    showToast(`[✓] Request sent! You receive GHS ${data.amount_to_pay.toFixed(2)}`);
                     reseller.wallet_balance -= amount;
                     localStorage.setItem('pdh_r', JSON.stringify(reseller));
                     updateWallet();
@@ -3521,7 +3554,7 @@
                 if (data.success) {
                     reseller.momo_name = momo_name; reseller.momo_number = momo_number; reseller.whatsapp_number = whatsapp_number;
                     localStorage.setItem('pdh_r', JSON.stringify(reseller));
-                    showToast('✅ Settings saved!');
+                    showToast('[✓] Settings saved!');
                 } else { showToast('❌ ' + (data.error || 'Failed to save')); }
             } catch (e) { showToast('❌ Connection error'); }
             btn.textContent = orig; btn.disabled = false;
@@ -3573,11 +3606,11 @@
         }
 
         function copyReferralCode() {
-            navigator.clipboard.writeText(reseller.access_code || '').then(() => showToast('✅ Referral code copied!'));
+            navigator.clipboard.writeText(reseller.access_code || '').then(() => showToast('[✓] Referral code copied!'));
         }
         function copyReferralLink() {
             const el = document.getElementById('ref-link');
-            el.select(); document.execCommand('copy'); showToast('✅ Referral link copied!');
+            el.select(); document.execCommand('copy'); showToast('[✓] Referral link copied!');
         }
         function shareReferralToWhatsApp() {
             const code = reseller.access_code || '';
@@ -3923,7 +3956,7 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    document.getElementById('reg-modal-success').textContent = '✅ Account created! Signing you in...';
+                    document.getElementById('reg-modal-success').textContent = '[✓] Account created! Signing you in...';
                     document.getElementById('reg-modal-success').style.display = 'block';
                     setTimeout(async () => {
                         try {
@@ -3936,7 +3969,7 @@
                                 await loadMyProfitFromServer();
                                 closeRegModal();
                                 showApp();
-                                showToast('✅ Welcome, ' + reseller.name + '!');
+                                showToast('[✓] Welcome, ' + reseller.name + '!');
                             } else {
                                 showRegModalError('Account created! Please sign in at the portal.');
                             }
@@ -3969,7 +4002,7 @@
                     await loadMyProfitFromServer();
                     closeRegModal();
                     showApp();
-                    showToast('✅ Welcome back, ' + reseller.name + '!');
+                    showToast('[✓] Welcome back, ' + reseller.name + '!');
                 } else {
                     document.getElementById('modal-login-error').textContent = data.error || 'Invalid credentials';
                     document.getElementById('modal-login-error').style.display = 'block';
@@ -3986,6 +4019,36 @@
         function showRegModalError(msg) {
             const el = document.getElementById('reg-modal-error');
             if (el) { el.textContent = msg; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 3000); }
+        }
+        async function checkApprovalStatus() {
+            if (!reseller?.firebase_key) {
+                showToast('Please log in first');
+                return;
+            }
+            try {
+                showToast('Checking approval status...');
+                const res = await fetch(`${BACKEND}/reseller/dashboard/${reseller.firebase_key}`);
+                const data = await res.json();
+                if (data.success && data.reseller) {
+                    const newApprovalStatus = data.reseller.is_approved === true;
+                    if (newApprovalStatus !== (reseller.is_approved === true)) {
+                        reseller.is_approved = data.reseller.is_approved;
+                        reseller.status = data.reseller.status;
+                        localStorage.setItem('pdh_r', JSON.stringify(reseller));
+                        showToast('[✓] Your store has been approved! Store link is now active.');
+                        showApp(); // Refresh the whole UI
+                    } else if (!newApprovalStatus) {
+                        showToast('[P] Still pending approval. You will be notified once approved.');
+                    } else {
+                        showToast('[✓] Your store is already approved!');
+                    }
+                } else {
+                    showToast('Could not check status. Please try again.');
+                }
+            } catch (e) {
+                console.error('Status check error:', e);
+                showToast('Connection error. Please try again.');
+            }
         }
 
         function keepBackendAwake() {
